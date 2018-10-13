@@ -5,21 +5,26 @@
  */
 package com.mycompany.labproj;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author miguel
  */
+@XmlRootElement
 public class WeatherHour {
     
     private double temp;
     private double temp_min;
     private double temp_max;
+    private String date;
     private String description;
     
-    public WeatherHour(double temp, double temp_min, double temp_max, String description) {
+    public WeatherHour(double temp, double temp_min, double temp_max, String date, String description) {
         this.temp = temp;
         this.temp_min = temp_min;
         this.temp_max = temp_max;
+        this.date = date;
         this.description = description;
     }
     
@@ -53,5 +58,13 @@ public class WeatherHour {
     
     public String getDescription() {
         return description;
+    }
+    
+    public void setDate(String date) {
+        this.date = date;
+    }
+    
+    public String getDate() {
+        return date;
     }
 }

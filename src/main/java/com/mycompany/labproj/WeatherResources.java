@@ -6,6 +6,8 @@
 package com.mycompany.labproj;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 
@@ -33,8 +35,9 @@ public class WeatherResources {
     static CloseableHttpClient httpClient = HttpClients.createDefault();
 
 
-    private static void sendLiveRequest(String city) {
+    public List<WeatherHour> sendRequestForWeatherInfo(String city) {
         
+        List<WeatherHour> reportWeather = new ArrayList<>();
         HttpGet get = new HttpGet(BASE_URL + ENDPOINT + "?q=" + city + "&appid=" + ACCESS_KEY + METRIC);
         
         try {
@@ -43,25 +46,19 @@ public class WeatherResources {
             
             JSONObject weatherReport = new JSONObject(EntityUtils.toString(entity));
             
-            System.out.println(weatherReport.toString());
-            System.out.println(weatherReport.getJSONArray("list"));
             JSONArray report = weatherReport.getJSONArray("list");
+           
             for(int i = 0; i < report.length();i++) {
-                System.out.println(report.getJSONObject(i).getJSONObject("main"));
-                System.out.println(report.getJSONObject(i).getJSONArray("weather"));
-                JSONArray tmp = report.getJSONObject(i).getJSONArray("weather");
-                System.out.println(tmp.getJSONObject(0).get("description"));
+                JSONObject tmp = report.getJSONObject(i);
+                double temp = tmp.getJSONObject("main").getDouble("temp");
+                double temp_min = tmp.getJSONObject("main").getDouble("temp_min");
+                double temp_max = tmp.getJSONObject("main").getDouble("temp_max");
+                String description = tmp.getJSONArray("weather").getJSONObject(0).getString("description");
+                String date = tmp.getString("dt_txt");
+                WeatherHour wHour = new WeatherHour(temp,temp_min,temp_max,date,description);
+                reportWeather.add(wHour);
             }
-            
-            for(int i = 0; i < report.length();i++) {
-                WeatherHour tmp;
-                double temp = report.getJSONObject(i).getJSONObject("main").getDouble("temp");
-                double temp_min = report.getJSONObject(i).getJSONObject("main").getDouble("temp_min");
-                double temp_max = report.getJSONObject(i).getJSONObject("main").getDouble("temp_max");
-                //String description = report
-            }
-            
-            
+
             response.close();
         } catch(ClientProtocolException e) {
             e.printStackTrace();
@@ -72,9 +69,7 @@ public class WeatherResources {
         } catch(JSONException e) {
             e.printStackTrace();
         }
-    }
-    
-    public static void main(String[] args) {
-        sendLiveRequest("Aveiro,pt");
-    }
+        
+        return reportWeather;
+    }  
 }
