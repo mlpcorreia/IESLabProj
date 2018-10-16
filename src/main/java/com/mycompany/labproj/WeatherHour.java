@@ -67,4 +67,10 @@ public class WeatherHour {
     public String getDate() {
         return date;
     }
+
+    @Override
+    public String toString() {
+        return '{' + "temp :" + temp + ", temp_min :" + temp_min + ", temp_max :" + temp_max + ", date :" + date + ", description :" + description + '}'+"\n";
+    }
+    
 }
