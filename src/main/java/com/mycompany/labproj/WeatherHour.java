@@ -5,6 +5,11 @@
  */
 package com.mycompany.labproj;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -12,12 +17,22 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author miguel
  */
 @XmlRootElement
+@Entity(name="P03G08")
 public class WeatherHour {
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
+    private Long Id;
+    @Column(name="temp")
     private double temp;
+    @Column(name="temp_min")
     private double temp_min;
+    @Column(name="temp_max")
     private double temp_max;
+    @Column(name="date")
     private String date;
+    @Column(name = "description")
     private String description;
     
     public WeatherHour(double temp, double temp_min, double temp_max, String date, String description) {
@@ -27,6 +42,10 @@ public class WeatherHour {
         this.date = date;
         this.description = description;
     }
+    
+    public Long getId(){
+        return Id;
+    } 
     
     public void setTemp(double temperature) {
         temp = temperature;

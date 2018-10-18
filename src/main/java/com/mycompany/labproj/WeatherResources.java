@@ -39,6 +39,8 @@ public class WeatherResources {
         
         List<WeatherHour> reportWeather = new ArrayList<>();
         HttpGet get = new HttpGet(BASE_URL + ENDPOINT + "?q=" + city + "&appid=" + ACCESS_KEY + METRIC);
+        // Persistence manager
+        WeatherHourManager wManager = new WeatherHourManager();
         
         try {
             CloseableHttpResponse response = httpClient.execute(get);
@@ -56,6 +58,8 @@ public class WeatherResources {
                 String description = tmp.getJSONArray("weather").getJSONObject(0).getString("description");
                 String date = tmp.getString("dt_txt");
                 WeatherHour wHour = new WeatherHour(temp,temp_min,temp_max,date,description);
+                //faz sentido persistencia ser aqui?
+                wManager.saveWeatherInfo(wHour);
                 reportWeather.add(wHour);
             }
 
