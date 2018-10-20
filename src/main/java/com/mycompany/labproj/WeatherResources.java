@@ -8,6 +8,8 @@ package com.mycompany.labproj;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.naming.NamingException;
+import javax.persistence.EntityManager;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 
@@ -41,7 +43,6 @@ public class WeatherResources {
         HttpGet get = new HttpGet(BASE_URL + ENDPOINT + "?q=" + city + "&appid=" + ACCESS_KEY + METRIC);
         // Persistence manager
         WeatherHourManager wManager = new WeatherHourManager();
-        
         try {
             CloseableHttpResponse response = httpClient.execute(get);
             HttpEntity entity = response.getEntity();
@@ -71,6 +72,8 @@ public class WeatherResources {
         } catch(ParseException e) {
             e.printStackTrace();
         } catch(JSONException e) {
+            e.printStackTrace();
+        }catch(NamingException e){
             e.printStackTrace();
         }
         

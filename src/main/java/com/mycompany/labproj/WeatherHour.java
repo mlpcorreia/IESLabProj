@@ -5,6 +5,7 @@
  */
 package com.mycompany.labproj;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,16 +31,16 @@ public class WeatherHour {
     private double temp_min;
     @Column(name="temp_max")
     private double temp_max;
-    @Column(name="date")
-    private String date;
+    @Column(name="dateW", unique = true)
+    private String dateW;
     @Column(name = "description")
     private String description;
     
-    public WeatherHour(double temp, double temp_min, double temp_max, String date, String description) {
+    public WeatherHour(double temp, double temp_min, double temp_max, String dateW, String description) {
         this.temp = temp;
         this.temp_min = temp_min;
         this.temp_max = temp_max;
-        this.date = date;
+        this.dateW = dateW;
         this.description = description;
     }
     
@@ -79,17 +80,17 @@ public class WeatherHour {
         return description;
     }
     
-    public void setDate(String date) {
-        this.date = date;
+    public void setDateW(String dateW) {
+        this.dateW = dateW;
     }
     
-    public String getDate() {
-        return date;
+    public String getDateW() {
+        return dateW;
     }
 
     @Override
     public String toString() {
-        return '{' + "temp :" + temp + ", temp_min :" + temp_min + ", temp_max :" + temp_max + ", date :" + date + ", description :" + description + '}'+"\n";
+        return '{' + "temp :" + temp + ", temp_min :" + temp_min + ", temp_max :" + temp_max + ", date :" + dateW + ", description :" + description + '}'+"\n";
     }
     
 }
