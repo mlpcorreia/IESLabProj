@@ -21,13 +21,39 @@ public class WeatherManager extends WeatherManagerBase {
         entityManager = getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            entityManager.persist(wHour);
-            System.out.println("saving");
-            entityManager.getTransaction().commit();
-            entityManager.close();
+            WeatherHour tmp = entityManager.find(WeatherHour.class, wHour.getUniqueLocalDate());
+            if (tmp != null) {
+                entityManager.close();
+                fullUpdate(tmp, wHour);
+            } else {
+                entityManager.persist(wHour);
+                System.out.println("saving");
+                entityManager.getTransaction().commit();
+                entityManager.close();
+            }
+
         } catch (Exception e) {
             entityManager.getTransaction().rollback();
-            System.err.println(e.getStackTrace());
+            e.getStackTrace();
+        }
+    }
+
+    @Override
+    public void fullUpdate(WeatherHour tmp, WeatherHour whour) throws NamingException {
+        entityManager = getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            tmp.setDateW(whour.getDateW());
+            tmp.setDescription(whour.getDescription());
+            tmp.setTemp(whour.getTemp());
+            tmp.setTempMax(whour.getTempMax());
+            tmp.setTempMin(whour.getTempMin());
+            entityManager.getTransaction().commit();
+            entityManager.close();
+
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            e.getStackTrace();
         }
     }
 }

@@ -21,7 +21,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity(name="P03G08")
 public class WeatherHour {
     
-    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private Long Id;
@@ -37,8 +36,13 @@ public class WeatherHour {
     private String description;
     @Column(name = "local")
     private String local;
-    @Column(name = "uniqueLocalDate", unique = true)
+    @Id
+    @Column(name = "uniqueLocalDate")
     private String uniqueLocalDate;
+    
+    public WeatherHour(){
+        
+    }
     
     public WeatherHour(double temp, double temp_min, double temp_max, String dateW, String description, String local, String unique) {
         this.temp = temp;
@@ -57,6 +61,10 @@ public class WeatherHour {
         this.dateW = dateW;
         this.description = description;
         this.local = local;
+    }
+    
+    public String getUniqueLocalDate() {
+        return uniqueLocalDate;
     }
 
     public String getLocal() {

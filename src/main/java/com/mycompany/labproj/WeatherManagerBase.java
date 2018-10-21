@@ -26,5 +26,10 @@ public abstract class WeatherManagerBase {
     @POST
     public void saveWeatherInfo(WeatherHour wHour) throws NamingException{   
     }
+    
+    @POST
+    public void fullUpdate(WeatherHour tmp, WeatherHour whour) throws NamingException{
+        
+    }
 
 }
