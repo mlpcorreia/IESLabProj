@@ -7,7 +7,7 @@
      <!-- Register resources and providers under com.vogella.jersey.first package. -->
     <init-param>
         <param-name>jersey.config.server.provider.packages</param-name>
-        <param-value>sample</param-value>
+        <param-value>com.mycompany.labproj</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>

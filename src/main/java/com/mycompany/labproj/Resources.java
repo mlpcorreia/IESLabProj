@@ -5,6 +5,8 @@
  */
 package com.mycompany.labproj;
 
+import com.mycompany.labproj.kafka.KConsumer;
+import com.mycompany.labproj.kafka.KProducer;
 import java.util.List;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -22,12 +24,15 @@ public class Resources {
 
     //@Inject
     WeatherResources wResources = new WeatherResources();
+    KProducer kProducer = new KProducer();
 
     @POST
     @Path("5days")
     @Produces(MediaType.APPLICATION_JSON)
     public Response forecast5Days(@FormParam("location") String location) {
         //System.out.println(location);
+        
+        
         List<WeatherHour> report;
         report = wResources.sendRequestForWeatherInfo(location);
         //debug print

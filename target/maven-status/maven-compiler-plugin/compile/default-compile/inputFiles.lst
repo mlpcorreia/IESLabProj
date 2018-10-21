@@ -1,5 +1,7 @@
-/home/miguel/NetBeansProjects/LabProj/src/main/java/com/mycompany/labproj/MyServelet.java
-/home/miguel/NetBeansProjects/LabProj/src/main/java/com/mycompany/labproj/WeatherHour.java
-/home/miguel/NetBeansProjects/LabProj/src/main/java/com/mycompany/labproj/WeatherResources.java
-/home/miguel/NetBeansProjects/LabProj/src/main/java/com/mycompany/labproj/Weather.java
-/home/miguel/NetBeansProjects/LabProj/src/main/java/com/mycompany/labproj/Resources.java
+/home/miguel/Desktop/IES/IESLabProj/src/main/java/com/mycompany/labproj/Resources.java
+/home/miguel/Desktop/IES/IESLabProj/src/main/java/com/mycompany/labproj/WeatherHourManagerBase.java
+/home/miguel/Desktop/IES/IESLabProj/src/main/java/com/mycompany/labproj/WeatherHourManager.java
+/home/miguel/Desktop/IES/IESLabProj/src/main/java/com/mycompany/labproj/WeatherResources.java
+/home/miguel/Desktop/IES/IESLabProj/src/main/java/com/mycompany/labproj/WeatherHour.java
+/home/miguel/Desktop/IES/IESLabProj/src/main/java/com/mycompany/labproj/kafka/KConsumer.java
+/home/miguel/Desktop/IES/IESLabProj/src/main/java/com/mycompany/labproj/kafka/KProducer.java

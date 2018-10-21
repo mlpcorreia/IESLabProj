@@ -1,1 +1,8 @@
-com/mycompany/labproj/MyServelet.class
+com/mycompany/labproj/kafka/KProducer.class
+com/mycompany/labproj/kafka/KConsumer.class
+com/mycompany/labproj/WeatherHourManagerBase.class
+com/mycompany/labproj/WeatherHourManager.class
+com/mycompany/labproj/WeatherHour_.class
+com/mycompany/labproj/WeatherHour.class
+com/mycompany/labproj/WeatherResources.class
+com/mycompany/labproj/Resources.class
