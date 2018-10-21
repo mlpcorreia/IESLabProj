@@ -22,21 +22,26 @@ import javax.ws.rs.core.Response;
 @Path("resources")
 public class Resources {
 
-    //@Inject
     WeatherResources wResources = new WeatherResources();
     KProducer kProducer = new KProducer();
 
     @POST
     @Path("5days")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_HTML)
     public Response forecast5Days(@FormParam("location") String location) {
-        //System.out.println(location);
-        
-        
         List<WeatherHour> report;
         report = wResources.sendRequestForWeatherInfo(location);
-        //debug print
-        //System.out.println(report);
-        return Response.ok(report.toString()).build();
+        String response = wResources.forecastHTML(report);
+        return Response.ok(response).build();
+    }
+    
+    @POST
+    @Path("current")
+    @Produces(MediaType.TEXT_HTML)
+    public Response forecastCurrent(@FormParam("location") String location) {
+        WeatherHour report;
+        report = wResources.sendRequestForWeatherCurrent(location);
+        String response = wResources.currentHTML(report);
+        return  Response.ok(response).build();
     }
 }

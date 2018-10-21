@@ -31,17 +31,40 @@ public class WeatherHour {
     private double temp_min;
     @Column(name="temp_max")
     private double temp_max;
-    @Column(name="dateW", unique = true)
+    @Column(name="dateW")
     private String dateW;
     @Column(name = "description")
     private String description;
+    @Column(name = "local")
+    private String local;
+    @Column(name = "uniqueLocalDate", unique = true)
+    private String uniqueLocalDate;
     
-    public WeatherHour(double temp, double temp_min, double temp_max, String dateW, String description) {
+    public WeatherHour(double temp, double temp_min, double temp_max, String dateW, String description, String local, String unique) {
         this.temp = temp;
         this.temp_min = temp_min;
         this.temp_max = temp_max;
         this.dateW = dateW;
         this.description = description;
+        this.local = local;
+        this.uniqueLocalDate = unique;
+    }
+
+    public WeatherHour(double temp, double temp_min, double temp_max, String description, String local) {
+        this.temp = temp;
+        this.temp_min = temp_min;
+        this.temp_max = temp_max;
+        this.dateW = dateW;
+        this.description = description;
+        this.local = local;
+    }
+
+    public String getLocal() {
+        return local;
+    }
+
+    public void setLocal(String local) {
+        this.local = local;
     }
     
     public Long getId(){

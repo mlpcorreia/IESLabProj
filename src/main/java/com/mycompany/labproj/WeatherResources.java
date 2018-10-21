@@ -1,15 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.labproj;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.naming.NamingException;
-import javax.persistence.EntityManager;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 
@@ -29,54 +23,157 @@ import org.json.JSONObject;
  * @author miguel
  */
 public class WeatherResources {
-    
+
     public static final String ACCESS_KEY = "2ab81415f3744d38bb015dd0f7f2c8c6";
     public static final String BASE_URL = "https://api.openweathermap.org/data/2.5/";
     public static final String ENDPOINT = "forecast";
+    public static final String CURRENT = "weather";
     public static final String METRIC = "&units=metric";
     static CloseableHttpClient httpClient = HttpClients.createDefault();
-
+    public static final String HTML_HEAD = "<!DOCTYPE html>\n"
+            + "<html>\n"
+            + "<head>\n"
+            + "<title>Start Page</title>\n"
+            + "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n"
+            + "<link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css\" integrity=\"sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO\" crossorigin=\"anonymous\">\n"
+            + "</head>\n"
+            + "<body>\n"
+            + "<div class=\"jumbotron\">\n"
+            + "<h1 class=\"display-4\"> P308 - OpenWeather </h1>\n";
+    public static final String HTML_END = "</div>\n"
+            + "<script src=\"https://code.jquery.com/jquery-3.3.1.slim.min.js\" integrity=\"sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo\" crossorigin=\"anonymous\"></script>\n"
+            + "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js\" integrity=\"sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49\" crossorigin=\"anonymous\"></script>\n"
+            + "<script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js\" integrity=\"sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy\" crossorigin=\"anonymous\"></script>\n"
+            + "</body>\n"
+            + "</html>";
 
     public List<WeatherHour> sendRequestForWeatherInfo(String city) {
-        
+
         List<WeatherHour> reportWeather = new ArrayList<>();
         HttpGet get = new HttpGet(BASE_URL + ENDPOINT + "?q=" + city + "&appid=" + ACCESS_KEY + METRIC);
-        // Persistence manager
-        WeatherHourManager wManager = new WeatherHourManager();
+        WeatherManager wManager = new WeatherManager();
+
         try {
             CloseableHttpResponse response = httpClient.execute(get);
             HttpEntity entity = response.getEntity();
-            
+
             JSONObject weatherReport = new JSONObject(EntityUtils.toString(entity));
-            
+
             JSONArray report = weatherReport.getJSONArray("list");
-           
-            for(int i = 0; i < report.length();i++) {
+
+            for (int i = 0; i < report.length(); i++) {
                 JSONObject tmp = report.getJSONObject(i);
                 double temp = tmp.getJSONObject("main").getDouble("temp");
                 double temp_min = tmp.getJSONObject("main").getDouble("temp_min");
                 double temp_max = tmp.getJSONObject("main").getDouble("temp_max");
                 String description = tmp.getJSONArray("weather").getJSONObject(0).getString("description");
                 String date = tmp.getString("dt_txt");
-                WeatherHour wHour = new WeatherHour(temp,temp_min,temp_max,date,description);
-                //faz sentido persistencia ser aqui?
+                String unique = city.concat(date);
+                WeatherHour wHour = new WeatherHour(temp, temp_min, temp_max, date, description, city, unique);
                 wManager.saveWeatherInfo(wHour);
                 reportWeather.add(wHour);
             }
 
             response.close();
-        } catch(ClientProtocolException e) {
+        } catch (ClientProtocolException e) {
             e.printStackTrace();
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        } catch(ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
-        } catch(JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
-        }catch(NamingException e){
+        } catch (NamingException e) {
             e.printStackTrace();
         }
-        
+
         return reportWeather;
-    }  
+    }
+
+    public WeatherHour sendRequestForWeatherCurrent(String city) {
+
+        HttpGet get = new HttpGet(BASE_URL + CURRENT + "?q=" + city + "&appid=" + ACCESS_KEY + METRIC);
+
+        WeatherHour wHour = null;
+
+        try {
+            CloseableHttpResponse response = httpClient.execute(get);
+            HttpEntity entity = response.getEntity();
+
+            JSONObject weatherReport = new JSONObject(EntityUtils.toString(entity));
+            System.out.println(weatherReport);
+            double temp = weatherReport.getJSONObject("main").getDouble("temp");
+            double temp_min = weatherReport.getJSONObject("main").getDouble("temp_min");
+            double temp_max = weatherReport.getJSONObject("main").getDouble("temp_max");
+            String description = weatherReport.getJSONArray("weather").getJSONObject(0).getString("description");
+            wHour = new WeatherHour(temp, temp_min, temp_max, description, city);
+            response.close();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return wHour;
+    }
+
+    public String currentHTML(WeatherHour whour) {
+
+        StringBuilder body = new StringBuilder();
+        body.append(HTML_HEAD);
+        body.append("<p> Location :");
+        body.append(whour.getLocal());
+        body.append("</p>");
+        body.append("<p> Current temp: ");
+        body.append(whour.getTemp());
+        body.append(" ºC</p>");
+        body.append("<p> Min temp: ");
+        body.append(whour.getTempMin());
+        body.append(" ºC</p>");
+        body.append("<p> Max temp: ");
+        body.append(whour.getTempMax());
+        body.append(" ºC</p>");
+        body.append("<p> Weather condition: ");
+        body.append(whour.getDescription());
+        body.append("</p>");
+        body.append(HTML_END);
+        String finalHTML = body.toString();
+        return finalHTML;
+    }
+
+    public String forecastHTML(List<WeatherHour> whour) {
+
+        StringBuilder body = new StringBuilder();
+        body.append(HTML_HEAD);
+        body.append("<p class=\"lead\">").append("Location ").append(whour.get(1).getLocal()).append("</p>");
+        body.append(
+                 "<table class=\"table\">"
+                + "<thead>"
+                + "<tr>"
+                + "<th>Min Temp</th>"
+                + "<th>Max Temp</th>"
+                + "<th>Date</th>"
+                + "<th>Description</th>"
+                + "</tr>"
+                + "</thead>"
+        );
+        for (int i = 0; i < whour.size(); i++) {
+            body.append("<tr><td>")
+                    .append(whour.get(i).getTempMin())
+                    .append(" ºC</td><td>")
+                    .append(whour.get(i).getTempMax())
+                    .append(" ºC</td><td>")
+                    .append(whour.get(i).getDateW())
+                    .append("</td><td>")
+                    .append(whour.get(i).getDescription())
+                    .append("</td></tr>");
+        }
+        body.append(HTML_END);
+        String finalHTML = body.toString();
+        return finalHTML;
+    }
+
 }
