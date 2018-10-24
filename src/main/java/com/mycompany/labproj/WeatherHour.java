@@ -14,8 +14,8 @@ import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author miguel
+ * @author Henrique Manso Nº 65308
+ * @author Miguel Correia Nº69892
  */
 @XmlRootElement
 @Entity(name="P03G08")

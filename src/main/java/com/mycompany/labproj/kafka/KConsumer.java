@@ -15,8 +15,9 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
 /**
- *
- * @author miguel
+ * Kafka consumer
+ * @author Henrique Manso Nº 65308
+ * @author Miguel Correia Nº69892
  */
 public final class KConsumer extends TimerTask{
     

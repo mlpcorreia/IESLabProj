@@ -1,5 +1,6 @@
 package com.mycompany.labproj;
 
+import com.mycompany.labproj.kafka.KProducer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *
- * @author miguel
+ * Get and parse data from OpenWeather
+ * @author Henrique Manso Nº 65308
+ * @author Miguel Correia Nº69892
  */
 public class WeatherResources {
 
@@ -58,16 +60,21 @@ public class WeatherResources {
             HttpEntity entity = response.getEntity();
 
             JSONObject weatherReport = new JSONObject(EntityUtils.toString(entity));
-
             JSONArray report = weatherReport.getJSONArray("list");
+            KProducer producer = new KProducer();
 
+            double temp = report.getJSONObject(0).getJSONObject("main").getDouble("temp");
+            String date = "";
             for (int i = 0; i < report.length(); i++) {
                 JSONObject tmp = report.getJSONObject(i);
-                double temp = tmp.getJSONObject("main").getDouble("temp");
+                if(Math.abs(tmp.getJSONObject("main").getDouble("temp") - temp ) > 5) {
+                        producer.sendMessage("Alarm! Temperature difference greater than 5º between "+date+" and "+tmp.getString("dt_txt"));
+                }
+                temp = tmp.getJSONObject("main").getDouble("temp");
                 double temp_min = tmp.getJSONObject("main").getDouble("temp_min");
                 double temp_max = tmp.getJSONObject("main").getDouble("temp_max");
                 String description = tmp.getJSONArray("weather").getJSONObject(0).getString("description");
-                String date = tmp.getString("dt_txt");
+                date = tmp.getString("dt_txt");
                 String unique = city.concat(date);
                 WeatherHour wHour = new WeatherHour(temp, temp_min, temp_max, date, description, city, unique);
                 wManager.saveWeatherInfo(wHour);
@@ -124,7 +131,7 @@ public class WeatherResources {
 
         StringBuilder body = new StringBuilder();
         body.append(HTML_HEAD);
-        body.append("<p> Location :");
+        body.append("<p> Location : ");
         body.append(whour.getLocal());
         body.append("</p>");
         body.append("<p> Current temp: ");
@@ -175,5 +182,4 @@ public class WeatherResources {
         String finalHTML = body.toString();
         return finalHTML;
     }
-
 }

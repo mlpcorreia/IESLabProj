@@ -10,8 +10,9 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 /**
- *
- * @author miguel
+ * Kafka Producer
+ * @author Henrique Manso Nº 65308
+ * @author Miguel Correia Nº69892
  */
 public class KProducer {
     
@@ -28,7 +29,6 @@ public class KProducer {
     
     public void sendMessage(String msg) {
         try{
-            System.out.println(msg+"Producer");
             kafkaProducer.send(new ProducerRecord("weatherAlarm",msg));
         }catch(Exception e){
             e.printStackTrace();

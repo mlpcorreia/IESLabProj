@@ -13,8 +13,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 
 /**
- *
- * @author hjmmanso
+ * @author Henrique Manso Nº 65308
+ * @author Miguel Correia Nº69892
  */
 @Produces("application/json")
 public abstract class WeatherManagerBase {

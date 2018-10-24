@@ -9,8 +9,9 @@ import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 
 /**
- *
- * @author hjmmanso
+ * Save data to the database
+ * @author Henrique Manso Nº 65308
+ * @author Miguel Correia Nº69892
  */
 public class WeatherManager extends WeatherManagerBase {
 

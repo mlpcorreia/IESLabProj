@@ -5,7 +5,6 @@
  */
 package com.mycompany.labproj;
 
-import com.mycompany.labproj.kafka.KConsumer;
 import com.mycompany.labproj.kafka.KProducer;
 import java.util.List;
 import javax.ws.rs.FormParam;
@@ -16,8 +15,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- *
- * @author miguel
+ * Exposes web resources using REST
+ * @author Henrique Manso Nº 65308
+ * @author Miguel Correia Nº69892
  */
 @Path("resources")
 public class Resources {
